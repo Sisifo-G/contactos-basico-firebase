@@ -5,23 +5,43 @@ import db from './../firebase/firebaseConfig';
 const Contacto = ({id, nombre, correo}) => {
 
     const [ editandoTarea, setEditandoTarea ] = useState(false);
+    const [ nuevoNombre, setNuevoNombre ] =useState(nombre);
+    const [ nuevoCorreo, setNuevoCorreo ] =useState(correo);
+
+    const actualizarContacto = (e) => {
+        e.preventDefault();
+
+        db.collection('usuarios').doc(id).update({
+            nombre: nuevoNombre,
+            correo: nuevoCorreo
+        })
+        .then(() => {
+            console.log('El usuario se actualizó correctamente');
+        })
+        .catch((e) => {
+            console.log('Hubo un error al intentar actualizar el usuario');
+        })
+
+        setEditandoTarea(false);
+    }
 
     return ( 
+
         <ContenedorContacto>
             {editandoTarea ? 
-            <form action="">
+            <form action="" onSubmit={actualizarContacto}>
                 <Input 
                     type="text" 
                     name="nombre" 
-                    // value={}
-                    // onChange={}
+                    value={nuevoNombre}
+                    onChange={(e) => setNuevoNombre(e.target.value)}
                     placeholder="Nombre"
                 />
                 <Input 
                     type="text" 
                     name="correo" 
-                    // value={}
-                    // onChange={}
+                    value={nuevoCorreo}
+                    onChange={(e) => setNuevoCorreo(e.target.value)}
                     placeholder="Correo"
                 />
                 <Boton type="submit"> Actualizar </Boton>
