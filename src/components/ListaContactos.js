@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import db from './../firebase/firebaseConfig';
 import Contacto from './Contacto';
@@ -11,6 +11,15 @@ const ListaContactos = () => {
         {id: 1, nombre: 'Manuel', correo: 'correo@correo.com'},
         {id: 2, nombre: 'Héctor', correo: 'correo@correo2.com'}
     ]);
+
+    useEffect(() => {
+        db.collection('usuarios').onSnapshot((snapshot) => {
+            setContactos(snapshot.docs.map((documento) => {
+                return {...documento.data(), id: documento.id}
+            }));
+        });
+        
+    }, []);
 
     return ( 
 
