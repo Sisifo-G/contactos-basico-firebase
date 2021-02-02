@@ -25,6 +25,16 @@ const Contacto = ({id, nombre, correo}) => {
         setEditandoTarea(false);
     }
 
+    const eliminarContacto = (id) => {
+        db.collection('usuarios').doc(id).delete()
+        .then(() => {
+            console.log('El usuario ha sido eliminado correctamente');
+        })
+        .catch((e) => {
+            console.log('Hubo un error al intentar eliminar el usuario');
+        })
+    }
+
     return ( 
 
         <ContenedorContacto>
@@ -51,7 +61,7 @@ const Contacto = ({id, nombre, correo}) => {
                 <Nombre> {nombre} </Nombre>
                 <Correo> {correo} </Correo>
                 <Boton onClick={() =>setEditandoTarea(!editandoTarea)}> Editar </Boton>
-                <Boton> Borrar </Boton>
+                <Boton onClick={() => eliminarContacto(id)}> Borrar </Boton>
             </>
             }
         </ContenedorContacto>
